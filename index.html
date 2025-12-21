@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroundingME: Exposing the Visual Grounding Gap in MLLMs through Multi-Dimensional Evaluation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="title">GroundingME</h1>
+            <h2 class="subtitle">Exposing the Visual Grounding Gap in MLLMs through Multi-Dimensional Evaluation</h2>
+            
+            <!-- Authors -->
+            <div class="authors">
+                <p>
+                    Rang Li<sup>1,2,*</sup>, Lei Li<sup>2,3</sup>, Shuhuai Ren<sup>2</sup>, Hao Tian<sup>2</sup>, Shuhao Gu<sup>2</sup>, Shicheng Li<sup>1,2</sup>, Zihao Yue<sup>2,4</sup>,<br>
+                    Yudong Wang<sup>1,2</sup>, Wenhan Ma<sup>1,2</sup>, Zhe Yang<sup>1</sup>, Jingyuan Ma<sup>1</sup>, Zhifang Sui<sup>1,◊</sup>, Fuli Luo<sup>2,◊</sup>
+                </p>
+            </div>
+            
+            <!-- Affiliations -->
+            <div class="affiliations">
+                <p>
+                    <sup>1</sup>State Key Laboratory of Multimedia Information Processing, School of Computer Science, Peking University<br>
+                    <sup>2</sup>LLM-Core Xiaomi &nbsp;&nbsp; <sup>3</sup>The University of Hong Kong &nbsp;&nbsp; <sup>4</sup>Renmin University of China
+                </p>
+                <p class="footnote">
+                    <sup>*</sup>Work done during internship at Xiaomi Corporation. &nbsp;&nbsp; <sup>◊</sup>Co-corresponding authors.
+                </p>
+            </div>
+            
+            <!-- Links -->
+            <div class="links">
+                <a href="https://arxiv.org/" class="button">📄 Paper (arXiv)</a>
+                <a href="https://huggingface.co/datasets/lirang04/GroundingME" class="button">💾 HF Dataset</a>
+                <!-- <a href="#" class="button">🔗 GitHub</a> -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Leaderboard -->
+    <section class="section leaderboard-section">
+        <div class="container">
+            <h2 class="section-title">🏆 Leaderboard</h2>
+            
+            <div class="leaderboard-intro">
+                <p>
+                    <strong>GroundingME</strong> is a challenging visual grounding benchmark designed to rigorously evaluate MLLMs' ability to localize objects from natural language descriptions. 
+                    It systematically tests models across four critical dimensions: <strong>Discriminative</strong> (distinguishing similar objects), <strong>Spatial</strong> (complex relational reasoning), 
+                    <strong>Limited</strong> (handling occlusions/tiny objects), and <strong>Rejection</strong> (recognizing ungroundable queries). 
+                    The leaderboard below presents model performance on our 1,005 challenging examples.
+                </p>
+            </div>
+            
+            <div class="leaderboard-tabs">
+                <button class="tab-button active" onclick="showLeaderboard('opensource')">Open-Source Models</button>
+                <button class="tab-button" onclick="showLeaderboard('commercial')">Commercial Models</button>
+            </div>
+
+            <!-- Open-Source Models Leaderboard -->
+            <div id="opensource-leaderboard" class="leaderboard-content active">
+                <div class="table-wrapper">
+                    <div class="leaderboard-table-container">
+                        <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Model</th>
+                                <th>Total</th>
+                                <th>Dis.</th>
+                                <th>Spa.</th>
+                                <th>Lim.</th>
+                                <th>Rej.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="rank-1">
+                                <td>🥇</td>
+                                <td><strong>Qwen3-VL-A22B (Thinking)</strong></td>
+                                <td><strong>49.8</strong></td>
+                                <td>65.2</td>
+                                <td>73.7</td>
+                                <td>45.0</td>
+                                <td>5.5</td>
+                            </tr>
+                            <tr class="rank-2">
+                                <td>🥈</td>
+                                <td><strong>Qwen3-VL-32B (Thinking)</strong></td>
+                                <td><strong>46.9</strong></td>
+                                <td>65.7</td>
+                                <td>70.0</td>
+                                <td>36.0</td>
+                                <td>9.5</td>
+                            </tr>
+                            <tr class="rank-3">
+                                <td>🥉</td>
+                                <td><strong>Qwen3-VL-A22B</strong></td>
+                                <td><strong>45.1</strong></td>
+                                <td>69.6</td>
+                                <td>49.7</td>
+                                <td>54.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Qwen3-VL-32B</td>
+                                <td>39.5</td>
+                                <td>75.0</td>
+                                <td>47.3</td>
+                                <td>34.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Qwen3-VL-A3B (Thinking)</td>
+                                <td>39.2</td>
+                                <td>53.4</td>
+                                <td>53.3</td>
+                                <td>38.0</td>
+                                <td>5.5</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Qwen3-VL-A3B</td>
+                                <td>35.7</td>
+                                <td>63.2</td>
+                                <td>30.0</td>
+                                <td>46.7</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Qwen3-VL-8B (Thinking)</td>
+                                <td>34.3</td>
+                                <td>52.5</td>
+                                <td>43.0</td>
+                                <td>33.3</td>
+                                <td>4.5</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>GLM-4.5V (Thinking)</td>
+                                <td>34.0</td>
+                                <td>52.5</td>
+                                <td>45.3</td>
+                                <td>30.3</td>
+                                <td>4.0</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Qwen3-VL-4B</td>
+                                <td>33.9</td>
+                                <td>56.4</td>
+                                <td>28.3</td>
+                                <td>47.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>GLM-4.5V</td>
+                                <td>32.1</td>
+                                <td>52.9</td>
+                                <td>42.0</td>
+                                <td>29.3</td>
+                                <td>0.5</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Qwen3-VL-8B</td>
+                                <td>31.0</td>
+                                <td>61.3</td>
+                                <td>26.3</td>
+                                <td>36.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Qwen2.5-VL-72B</td>
+                                <td>29.6</td>
+                                <td>48.5</td>
+                                <td>40.3</td>
+                                <td>23.7</td>
+                                <td>3.0</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>Qwen2.5-VL-32B</td>
+                                <td>26.9</td>
+                                <td>47.5</td>
+                                <td>40.0</td>
+                                <td>17.7</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>MiMo-VL-7B-RL-2508 (Thinking)</td>
+                                <td>24.1</td>
+                                <td>46.6</td>
+                                <td>28.7</td>
+                                <td>17.0</td>
+                                <td>5.0</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>Qwen3-VL-2B</td>
+                                <td>21.1</td>
+                                <td>44.6</td>
+                                <td>11.7</td>
+                                <td>28.7</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>MiMo-VL-7B-RL-2508</td>
+                                <td>18.6</td>
+                                <td>44.1</td>
+                                <td>19.3</td>
+                                <td>13.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>InternVL3.5-A28B</td>
+                                <td>17.1</td>
+                                <td>28.4</td>
+                                <td>25.0</td>
+                                <td>13.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>Qwen2.5-VL-7B</td>
+                                <td>15.1</td>
+                                <td>31.9</td>
+                                <td>14.3</td>
+                                <td>14.3</td>
+                                <td>0.5</td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>Llama-4-Maverick</td>
+                                <td>13.0</td>
+                                <td>18.1</td>
+                                <td>22.3</td>
+                                <td>5.0</td>
+                                <td>6.0</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>Llama-Nemotron-8B</td>
+                                <td>10.4</td>
+                                <td>25.0</td>
+                                <td>6.0</td>
+                                <td>8.3</td>
+                                <td>5.5</td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>Llama-4-Scout</td>
+                                <td>8.9</td>
+                                <td>17.6</td>
+                                <td>12.3</td>
+                                <td>3.7</td>
+                                <td>2.5</td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td>Keye-VL-1.5-8B</td>
+                                <td>8.5</td>
+                                <td>21.6</td>
+                                <td>8.0</td>
+                                <td>5.7</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td>LLaVA-OneVision-1.5-8B</td>
+                                <td>4.4</td>
+                                <td>9.8</td>
+                                <td>4.7</td>
+                                <td>3.3</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td>MiniCPM-V-4.5</td>
+                                <td>4.0</td>
+                                <td>7.8</td>
+                                <td>4.0</td>
+                                <td>4.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>InternVL3.5-8B</td>
+                                <td>3.3</td>
+                                <td>6.4</td>
+                                <td>4.0</td>
+                                <td>1.7</td>
+                                <td>1.5</td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td>Mistral-3.2-24B</td>
+                                <td>1.7</td>
+                                <td>4.4</td>
+                                <td>2.7</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>27</td>
+                                <td>Phi-4-Multimodal</td>
+                                <td>0.4</td>
+                                <td>1.0</td>
+                                <td>0.7</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                            </tr>
+                            <tr>
+                                <td>28</td>
+                                <td>Gemma-3-27B</td>
+                                <td>0.4</td>
+                                <td>1.5</td>
+                                <td>0.3</td>
+                                <td>0.0</td>
+                                <td>0.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commercial Models Leaderboard -->
+            <div id="commercial-leaderboard" class="leaderboard-content">
+                <div class="table-wrapper">
+                    <div class="leaderboard-table-container">
+                        <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Model</th>
+                                <th>Total</th>
+                                <th>Dis.</th>
+                                <th>Spa.</th>
+                                <th>Lim.</th>
+                                <th>Rej.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="rank-1">
+                                <td>🥇</td>
+                                <td><strong>Seed-1.6-Vision-250815 (Thinking)</strong></td>
+                                <td><strong>46.5</strong></td>
+                                <td>59.3</td>
+                                <td>72.7</td>
+                                <td>41.7</td>
+                                <td>1.5</td>
+                            </tr>
+                            <tr class="rank-2">
+                                <td>🥈</td>
+                                <td><strong>Seed-1.6-Vision-250815</strong></td>
+                                <td><strong>42.6</strong></td>
+                                <td>59.8</td>
+                                <td>58.7</td>
+                                <td>42.7</td>
+                                <td>1.0</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Gemini-2.5-Pro</td>
+                                <td>20.7</td>
+                                <td>34.8</td>
+                                <td>34.0</td>
+                                <td>7.0</td>
+                                <td>7.0</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Gemini-2.5-Flash</td>
+                                <td>18.7</td>
+                                <td>36.3</td>
+                                <td>25.0</td>
+                                <td>13.0</td>
+                                <td>0.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+            <p class="caption" style="margin-top: 20px; text-align: center;">
+                All metrics reported are Accuracy@0.5. <strong>Dis.</strong> = Discriminative, <strong>Spa.</strong> = Spatial, <strong>Lim.</strong> = Limited, <strong>Rej.</strong> = Rejection
+            </p>
+        </div>
+    </section>
+
+    <!-- Abstract -->
+    <section class="section abstract-section">
+        <div class="container">
+            <h2 class="section-title">Abstract</h2>
+            <div class="abstract-content">
+                <p>
+                    Visual grounding—localizing objects from natural language descriptions—represents a critical bridge between language and vision understanding. While multimodal large language models (MLLMs) achieve impressive scores on existing benchmarks, a fundamental question remains: <strong>can MLLMs truly ground language in vision with human-like sophistication, or are they merely pattern-matching on simplified datasets?</strong>
+                </p>
+                <p>
+                    Current benchmarks fail to capture real-world complexity where humans effortlessly navigate ambiguous references and recognize when grounding is impossible. To rigorously assess MLLMs' true capabilities, we introduce <strong>GroundingME</strong>, a benchmark that systematically challenges models across four critical dimensions: 
+                    <span class="highlight">(1) Discriminative</span>—distinguishing highly similar objects, 
+                    <span class="highlight">(2) Spatial</span>—understanding complex relational descriptions, 
+                    <span class="highlight">(3) Limited</span>—handling occlusions or tiny objects, and 
+                    <span class="highlight">(4) Rejection</span>—recognizing ungroundable queries.
+                </p>
+                <p>
+                    Through careful curation combining automated generation with human verification, we create <strong>1,005 challenging examples</strong> mirroring real-world complexity. Evaluating <strong>25 state-of-the-art MLLMs</strong> reveals a profound capability gap: the best model achieves only <strong>45.1% accuracy</strong>, while most score <strong>0% on rejection tasks</strong>—reflexively hallucinating objects rather than acknowledging their absence, raising critical safety concerns for deployment.
+                </p>
+                <p>
+                    We explore two strategies for improvements: (1) <strong>test-time scaling</strong> selects optimal response by thinking trajectory to improve complex grounding by up to 2.9%, and (2) <strong>data-mixture training</strong> teaches models to recognize ungroundable queries, boosting rejection accuracy from 0% to 27.9%. GroundingME thus serves as both a diagnostic tool revealing current limitations in MLLMs and a roadmap toward human-level visual grounding.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benchmark Design & Examples -->
+    <section class="section highlight-section">
+        <div class="container">
+            <h2 class="section-title">Benchmark Design</h2>
+            
+            <div class="design-examples-grid">
+                <!-- Left: Benchmark Design Images -->
+                <div class="design-column">
+                    <div class="image-container">
+                        <img src="images/category.jpg" alt="Category distribution">
+                        <p class="caption">
+                            <strong>Subtask Distribution.</strong> Our benchmark comprises of 1,005 samples, distributed across four L-1 categories and twelve L-2 subcategories.
+                        </p>
+                    </div>
+                    
+                    <!-- <div class="image-container">
+                        <img src="images/statistics_table.jpg" alt="Statistics of GroundingME">
+                        <p class="caption">
+                            <strong>Statistics of GroundingME.</strong> High-resolution images, diverse object classes, and challenging variations.
+                        </p>
+                    </div> -->
+                </div>
+                
+                <!-- Right: Challenge Examples -->
+                <div class="examples-column">
+                    <div class="image-container">
+                        <img src="images/examples.jpg" alt="Examples of GroundingME benchmark">
+                        <p class="caption">
+                            <strong>Examples of different visual grounding benchmarks.</strong> <span style="color: green;">■ Green bounding box</span> indicates the correct ground-truth object, while <span style="color: red;">■ red bounding box</span> shows the answer of Qwen3-VL-30B-A3B-Instruct.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Construction Pipeline -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Construction Pipeline</h2>
+            <div class="image-container">
+                <img src="images/pipeline_flat.jpg" alt="Construction pipeline">
+                <p class="caption">
+                    <strong>Three-stage human-in-the-loop annotation pipeline:</strong> (1) Bounding Box Annotation using automated tools, (2) Description Generation with MLLMs, and (3) Manual Selection and Refinement to ensure quality and challenge.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="section results-section">
+        <div class="container">
+            <h2 class="section-title">Evaluation Results</h2>
+            
+            <h3 style="text-align: center; margin-bottom: 30px;">Performance of 25 State-of-the-Art Models</h3>
+            
+            <div class="key-findings">
+                <div class="finding-item">
+                    <div class="finding-icon">❌</div>
+                    <div class="finding-text">
+                        <strong>Significant Performance Gap</strong>
+                        <p>Best model (Qwen3-VL-A22B) achieves only 45.1% accuracy, with most models scoring 10-40%</p>
+                    </div>
+                </div>
+                <div class="finding-item">
+                    <div class="finding-icon">🚫</div>
+                    <div class="finding-text">
+                        <strong>Critical Failure on Rejection</strong>
+                        <p>Most models score 0% on rejection tasks, reflexively hallucinating non-existent objects</p>
+                    </div>
+                </div>
+                <div class="finding-item">
+                    <div class="finding-icon">📈</div>
+                    <div class="finding-text">
+                        <strong>Model Scale Matters</strong>
+                        <p>Consistent performance improvement with increased model size across model families</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container" style="margin-top: 40px;">
+                <img src="images/main_results_table.jpg" alt="Main evaluation results table">
+                <p class="caption">
+                    <strong>Main evaluation results on GroundingME.</strong> All metrics reported are Accuracy@0.5. All models in this table are evaluated under the no-thinking mode setting if supported.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis -->
+    <section class="section highlight-section">
+        <div class="container">
+            <h2 class="section-title">Analysis & Improvements</h2>
+            
+            <div class="analysis-grid">
+                <div class="analysis-item">
+                    <h3>💭 Effectiveness of Thinking</h3>
+                    <div class="image-container">
+                        <img src="images/think_gain.jpg" alt="Thinking mode performance gain">
+                    </div>
+                    <p>
+                        Thinking mode universally improves performance across all tested models, with gains ranging from 1.9% to 7.4%. Models show notable improvements on reasoning-intensive tasks (Spatial and Rejection) and can learn basic rejection behavior through thinking.
+                    </p>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>⚡ Test-Time Scaling</h3>
+                    <p>
+                        By generating multiple thinking trajectories and selecting the best one using an LLM judge, we achieve significant performance improvements:
+                    </p>
+                    <ul>
+                        <li><strong>+2.9% overall</strong> with DeepSeek-R1 as judge</li>
+                        <li><strong>+9.7% on Rejection tasks</strong> (from 5.7% to 15.4%)</li>
+                        <li><strong>+2.8% on Spatial tasks</strong> (from 74.5% to 77.3%)</li>
+                    </ul>
+                    <p>
+                        Text-only LLMs evaluating thinking trajectory quality prove effective for reasoning-intensive categories.
+                    </p>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>📚 Data Mixture Training</h3>
+                    <div class="image-container">
+                        <img src="images/mix_ratio.jpg" alt="Data mixture results">
+                    </div>
+                    <p>
+                        Fine-tuning on RefCOCOg augmented with negative samples teaches models to reject ungroundable queries:
+                    </p>
+                    <ul>
+                        <li><strong>Rejection accuracy: 0% → 27.9%</strong> on GroundingME</li>
+                        <!-- <li><strong>In-domain rejection: 30.5% → 97.3%</strong> on RefCOCOg</li> -->
+                        <!-- <li>Trade-off: slight performance decrease on positive samples for out-of-domain generalization</li> -->
+                        <li>Trade-off: performance decrease on positive samples</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- <div class="image-container" style="margin-top: 40px;">
+                <img src="images/think_case.jpg" alt="Case study of thinking trajectories">
+                <p class="caption">
+                    <strong>Case study of two different thinking trajectories.</strong> The correct trajectory (Green) demonstrates rigorous adherence to the description, systematically identifying attribute mismatches and correctly concluding with null output. The erroneous trajectory (Red) acknowledges discrepancies but compromises by speculating the description may be in error.
+                </p>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Citation -->
+    <!-- <section class="section citation-section">
+        <div class="container">
+            <h2 class="section-title">Citation</h2>
+            <div class="citation-box">
+                <pre><code>@article{li2025groundingme,
+  title={GroundingME: Exposing the Visual Grounding Gap in MLLMs through Multi-Dimensional Evaluation},
+  author={Li, Rang and Li, Lei and Ren, Shuhuai and Tian, Hao and Gu, Shuhao and Li, Shicheng and Yue, Zihao and Wang, Yudong and Ma, Wenhan and Yang, Zhe and Ma, Jingyuan and Sui, Zhifang and Luo, Fuli},
+  journal={arXiv preprint},
+  year={2025}
+}</code></pre>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 GroundingME Team. Project page: <a href="https://groundingme.github.io">https://groundingme.github.io</a></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Leaderboard Tabs -->
+    <script>
+        function showLeaderboard(type) {
+            // Hide all leaderboards
+            document.getElementById('opensource-leaderboard').classList.remove('active');
+            document.getElementById('commercial-leaderboard').classList.remove('active');
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected leaderboard
+            if (type === 'opensource') {
+                document.getElementById('opensource-leaderboard').classList.add('active');
+                buttons[0].classList.add('active');
+            } else if (type === 'commercial') {
+                document.getElementById('commercial-leaderboard').classList.add('active');
+                buttons[1].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+
